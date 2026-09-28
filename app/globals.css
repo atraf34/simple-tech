@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+  background-color: #0e1321;
+  color: #f8fafc;
+  overscroll-behavior: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #303444;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Hairline glass card, used across product / info cards */
+.glass-card {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  backdrop-filter: blur(16px);
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 24px -4px rgba(0, 240, 255, 0.18);
+}
+
+/* Primary cyber CTA */
+.btn-cyan {
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid #00f0ff;
+  color: #00f0ff;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-cyan:hover {
+  background: #00f0ff;
+  color: #0a0f1d;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+}
+
+.btn-violet {
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid #8b5cf6;
+  color: #d8b4fe;
+  transition: background-color 0.2s ease;
+}
+.btn-violet:hover {
+  background: rgba(139, 92, 246, 0.25);
+}
+
+/* Spec / pinout chip */
+.chip-spec {
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+}
+
+.chip-stock {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid #10b981;
+  color: #34d399;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
