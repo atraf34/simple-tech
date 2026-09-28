@@ -2,11 +2,13 @@ import { Search, Bell, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Marquee from "@/components/home/Marquee";
+import MenuButton from "./MenuButton";
 
 export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 frosted border-b">
       <div className="max-w-[1440px] mx-auto flex items-center gap-3 px-margin md:px-margin-desktop py-3">
+        <MenuButton />
         <Link href="/" aria-label="SiMPLE TECHNOLOGIES হোম" className="flex items-center shrink-0">
           <Image
             src="/logo.png"

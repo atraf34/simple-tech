@@ -8,10 +8,10 @@ export default async function ProjectKits() {
   const kits = await getProjectKits();
 
   return (
-    <section className="mt-8 px-margin md:px-margin-desktop">
+    <section className="mt-8 px-margin md:px-margin-desktop lg:pl-8">
       <div className="flex items-center justify-between mb-3">
         <h2 className="flex items-center gap-1.5 font-bn font-semibold text-headline-sm text-on-surface">
-          <GraduationCap className="h-4.5 w-4.5 text-violet" strokeWidth={2} />
+          <GraduationCap className="h-4.5 w-4.5 text-[#7C3AED]" strokeWidth={2} />
           ইঞ্জিনিয়ারিং প্রজেক্ট কিটস
         </h2>
         <Link

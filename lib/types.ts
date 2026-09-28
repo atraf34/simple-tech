@@ -1,15 +1,8 @@
 export type Category = {
   slug: string;
   label: string;
-  icon:
-    | "bot"
-    | "wifi"
-    | "cpu"
-    | "radio"
-    | "cog"
-    | "battery"
-    | "wrench"
-    | "layers";
+  icon: string;
+  color?: string;
 };
 
 export type Badge = { label: string; tone: "emerald" | "violet" };
@@ -99,4 +92,22 @@ export type WarrantyDocument = {
   fileUrl: string;
   warrantyExpiry?: string;
   uploadedAt: string;
+};
+
+export type Slide = {
+  id: string;
+  image: string;
+  title: string;
+  subtitle: string;
+  badge: string;
+  cta: string;
+  link: string;
+  theme: string; // colour key from category-style palette
+  active: boolean;
+};
+
+export type HomeSlides = {
+  enabled: boolean;
+  intervalSec: number;
+  slides: Slide[];
 };

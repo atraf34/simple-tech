@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Loader2, LogOut, FileText, Package } from "lucide-react";
+import { Loader2, LogOut, FileText, Package, KeyRound } from "lucide-react";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import { formatBDT } from "@/lib/format";
+import { normalizePhone, phoneToEmail, legacyEmail } from "@/lib/phone";
 
 type OrderRow = {
   id: string;
@@ -28,10 +29,6 @@ const STATUS_BN: Record<string, string> = {
   cancelled: "বাতিল",
 };
 
-// Customers log in with their mobile number. Supabase Auth needs an email,
-// so we derive a private one from the phone number.
-const phoneToEmail = (phone: string) => `${phone.replace(/\D/g, "")}@phone.simpletech.app`;
-
 export default function AccountPage() {
   const supabase = getSupabaseBrowserClient();
   const [ready, setReady] = useState(false);
@@ -46,6 +43,11 @@ export default function AccountPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [oldPw, setOldPw] = useState("");
+  const [newPw, setNewPw] = useState("");
+  const [newPw2, setNewPw2] = useState("");
+  const [pwBusy, setPwBusy] = useState(false);
+  const [pwMsg, setPwMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   const loadData = useCallback(async () => {
     if (!supabase) return;
@@ -77,25 +79,59 @@ export default function AccountPage() {
   async function submit() {
     if (!supabase) return;
     setError("");
-    if (!/^(\+?88)?01[3-9]\d{8}$/.test(phone.replace(/\s+/g, ""))) return setError("সঠিক মোবাইল নম্বর দিন");
+    const canonical = normalizePhone(phone);
+    if (!canonical) return setError("সঠিক মোবাইল নম্বর দিন (01XXXXXXXXX)");
     if (password.length < 6) return setError("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে");
     if (mode === "signup" && !name.trim()) return setError("আপনার নাম দিন");
     setBusy(true);
-    const email = phoneToEmail(phone);
-    const res =
-      mode === "signup"
-        ? await supabase.auth.signUp({ email, password, options: { data: { name, phone } } })
-        : await supabase.auth.signInWithPassword({ email, password });
-    setBusy(false);
-    if (res.error) {
-      setError(
-        res.error.message.includes("Invalid login")
-          ? "নম্বর বা পাসওয়ার্ড ভুল"
-          : res.error.message.includes("already registered")
-          ? "এই নম্বর দিয়ে আগেই অ্যাকাউন্ট আছে, লগইন করুন"
-          : res.error.message
-      );
+    try {
+      if (mode === "signup") {
+        const r = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, phone: canonical, password }),
+        });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) {
+          setError(j.error || "অ্যাকাউন্ট খোলা যায়নি");
+          if (r.status === 409) setMode("login");
+          return;
+        }
+      }
+      // log in (older accounts may have been created with the 88-prefixed number)
+      let res = await supabase.auth.signInWithPassword({ email: phoneToEmail(canonical), password });
+      if (res.error) {
+        const alt = await supabase.auth.signInWithPassword({ email: legacyEmail(canonical), password });
+        if (!alt.error) res = alt;
+      }
+      if (res.error) {
+        setError("নম্বর বা পাসওয়ার্ড ভুল। পাসওয়ার্ড ভুলে গেলে আমাদের জানান, আমরা নতুন পাসওয়ার্ড দেব।");
+      }
+    } catch {
+      setError("নেটওয়ার্ক সমস্যা, আবার চেষ্টা করুন");
+    } finally {
+      setBusy(false);
     }
+  }
+
+  async function changePassword() {
+    if (!supabase) return;
+    setPwMsg(null);
+    if (newPw.length < 6) return setPwMsg({ ok: false, text: "নতুন পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে" });
+    if (newPw !== newPw2) return setPwMsg({ ok: false, text: "নতুন পাসওয়ার্ড দুইবার একই হয়নি" });
+    setPwBusy(true);
+    const { data } = await supabase.auth.getSession();
+    const r = await fetch("/api/auth/change-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${data.session?.access_token ?? ""}` },
+      body: JSON.stringify({ oldPassword: oldPw, newPassword: newPw }),
+    });
+    const j = await r.json().catch(() => ({}));
+    setPwBusy(false);
+    if (r.ok) {
+      setPwMsg({ ok: true, text: "পাসওয়ার্ড বদলানো হয়েছে ✓" });
+      setOldPw(""); setNewPw(""); setNewPw2("");
+    } else setPwMsg({ ok: false, text: j.error || "বদলানো যায়নি" });
   }
 
   if (!ready) {
@@ -138,7 +174,7 @@ export default function AccountPage() {
           <input
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            placeholder="মোবাইল নম্বর (017XXXXXXXX)"
+            placeholder="মোবাইল নম্বর (01XXXXXXXXX)" inputMode="numeric" autoComplete="tel"
             type="tel"
             className="rounded-full bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md"
           />
@@ -149,11 +185,11 @@ export default function AccountPage() {
             type="password"
             className="rounded-full bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md"
           />
-          {error && <p className="text-body-sm text-red-400">{error}</p>}
+          {error && <p className="text-body-sm text-red-600" role="alert">{error}</p>}
           <button
             onClick={submit}
             disabled={busy}
-            className="rounded-full bg-cyan text-surface-lowest py-3 font-bn font-semibold disabled:opacity-60"
+            className="btn-cyan py-3 font-bn font-semibold disabled:opacity-60"
           >
             {busy ? "অপেক্ষা করুন..." : mode === "login" ? "লগইন" : "অ্যাকাউন্ট খুলুন"}
           </button>
@@ -166,6 +202,11 @@ export default function AccountPage() {
           >
             {mode === "login" ? "নতুন? অ্যাকাউন্ট খুলুন" : "আগে থেকেই অ্যাকাউন্ট আছে? লগইন"}
           </button>
+          {mode === "login" && (
+            <p className="text-body-sm text-on-surface-variant">
+              পাসওয়ার্ড ভুলে গেছেন? আমাদের সাপোর্টে কল বা মেসেজ করুন — মোবাইল নম্বর যাচাই করে আমরা নতুন পাসওয়ার্ড দেব।
+            </p>
+          )}
         </div>
       </div>
     );
@@ -224,6 +265,22 @@ export default function AccountPage() {
             </span>
           </a>
         ))}
+      </div>
+
+      <h2 className="mt-8 mb-2 flex items-center gap-1.5 font-bn font-semibold text-headline-sm">
+        <KeyRound className="h-4 w-4 text-cyan" /> পাসওয়ার্ড পরিবর্তন
+      </h2>
+      <div className="glass-card rounded-lg p-4 flex flex-col gap-3">
+        <input type="password" autoComplete="current-password" value={oldPw} onChange={(e) => setOldPw(e.target.value)} placeholder="পুরনো পাসওয়ার্ড"
+          className="rounded-full bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md" />
+        <input type="password" autoComplete="new-password" value={newPw} onChange={(e) => setNewPw(e.target.value)} placeholder="নতুন পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)"
+          className="rounded-full bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md" />
+        <input type="password" autoComplete="new-password" value={newPw2} onChange={(e) => setNewPw2(e.target.value)} placeholder="নতুন পাসওয়ার্ড আবার লিখুন"
+          className="rounded-full bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md" />
+        {pwMsg && <p className={`text-body-sm ${pwMsg.ok ? "text-emerald-light" : "text-red-600"}`} role="status">{pwMsg.text}</p>}
+        <button onClick={changePassword} disabled={pwBusy || !oldPw || !newPw} className="btn-cyan py-3 font-bn font-semibold disabled:opacity-50">
+          {pwBusy ? "অপেক্ষা করুন..." : "পাসওয়ার্ড বদলান"}
+        </button>
       </div>
     </div>
   );
