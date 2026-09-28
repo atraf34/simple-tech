@@ -30,7 +30,7 @@ export default function CountdownTimer({
     <div className="flex items-center gap-1 font-mono text-label-mono-lg text-cyan">
       {[hours, minutes, seconds].map((unit, i) => (
         <span key={i} className="flex items-center gap-1">
-          <span className="rounded bg-cyan-soft border border-cyan/30 px-1.5 py-0.5 tabular-nums">
+          <span className="rounded-full bg-cyan-soft border border-cyan/30 px-1.5 py-0.5 tabular-nums">
             {toBengaliDigits(unit)}
           </span>
           {i < 2 && <span className="text-on-surface-variant">:</span>}

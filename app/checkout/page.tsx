@@ -98,11 +98,11 @@ export default function CheckoutPage() {
           </p>
         )}
         {done.demo && (
-          <p className="mt-3 text-label-mono-sm font-mono text-[#d8b4fe]">
+          <p className="mt-3 text-label-mono-sm font-mono text-violet">
             (ডেমো মোড: Supabase কানেক্ট না থাকায় অর্ডার সেভ হয়নি)
           </p>
         )}
-        <Link href="/" className="btn-cyan inline-block mt-6 rounded px-5 py-2.5 font-bn">
+        <Link href="/" className="btn-cyan inline-block mt-6 rounded-full px-5 py-2.5 font-bn">
           হোমে ফিরুন
         </Link>
       </div>
@@ -113,7 +113,7 @@ export default function CheckoutPage() {
     return (
       <div className="px-margin py-16 text-center">
         <p className="font-bn text-headline-sm text-on-surface">কার্ট খালি</p>
-        <Link href="/catalog" className="btn-cyan inline-block mt-4 rounded px-5 py-2.5 font-bn">
+        <Link href="/catalog" className="btn-cyan inline-block mt-4 rounded-full px-5 py-2.5 font-bn">
           প্রোডাক্ট দেখুন
         </Link>
       </div>
@@ -177,9 +177,9 @@ export default function CheckoutPage() {
               value={couponInput}
               onChange={(e) => setCouponInput(e.target.value)}
               placeholder="কুপন কোড (যেমন WELCOME10)"
-              className="flex-1 rounded bg-surface-lowest border border-outline-soft px-3 py-2 font-mono text-body-sm"
+              className="flex-1 rounded-full bg-surface-lowest border border-outline-soft px-3 py-2 font-mono text-body-sm"
             />
-            <button onClick={applyCoupon} className="btn-violet rounded px-4 text-body-sm">
+            <button onClick={applyCoupon} className="btn-violet px-4 text-body-sm">
               প্রয়োগ
             </button>
           </div>
@@ -224,12 +224,12 @@ export default function CheckoutPage() {
               onChange={(e) => setAddress(e.target.value)}
               rows={3}
               placeholder="বাসা/রুম নম্বর, এলাকা, থানা, জেলা"
-              className="rounded bg-surface-lowest border border-outline-soft px-3 py-2 text-body-md"
+              className="rounded-full bg-surface-lowest border border-outline-soft px-3 py-2 text-body-md"
             />
           </label>
           {error && <p className="text-body-sm text-red-400">{error}</p>}
           <div className="flex gap-2">
-            <button onClick={() => setStep(0)} className="rounded border border-outline-soft px-4 py-3 text-body-md">
+            <button onClick={() => setStep(0)} className="rounded-full border border-outline-soft px-4 py-3 text-body-md">
               ← পিছনে
             </button>
             <PrimaryButton onClick={nextFromAddress}>পেমেন্টে যান →</PrimaryButton>
@@ -253,13 +253,13 @@ export default function CheckoutPage() {
           </div>
           {error && <p className="mt-3 text-body-sm text-red-400">{error}</p>}
           <div className="mt-4 flex gap-2">
-            <button onClick={() => setStep(1)} className="rounded border border-outline-soft px-4 py-3 text-body-md">
+            <button onClick={() => setStep(1)} className="rounded-full border border-outline-soft px-4 py-3 text-body-md">
               ← পিছনে
             </button>
             <button
               onClick={placeOrder}
               disabled={submitting}
-              className="flex-1 rounded bg-cyan text-surface-lowest py-3 font-bn font-semibold text-body-lg flex items-center justify-center gap-2 disabled:opacity-60"
+              className="flex-1 rounded-full bg-cyan text-surface-lowest py-3 font-bn font-semibold text-body-lg flex items-center justify-center gap-2 disabled:opacity-60"
             >
               {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
               {formatBDT(total)} অর্ডার নিশ্চিত করুন
@@ -305,7 +305,7 @@ function PrimaryButton({ onClick, children }: { onClick: () => void; children: R
   return (
     <button
       onClick={onClick}
-      className="mt-4 flex-1 w-full rounded bg-cyan text-surface-lowest py-3 font-bn font-semibold text-body-lg"
+      className="mt-4 flex-1 w-full rounded-full bg-cyan text-surface-lowest py-3 font-bn font-semibold text-body-lg"
     >
       {children}
     </button>
@@ -333,7 +333,7 @@ function Field({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="rounded bg-surface-lowest border border-outline-soft px-3 py-2 text-body-md"
+        className="rounded-full bg-surface-lowest border border-outline-soft px-3 py-2 text-body-md"
       />
     </label>
   );

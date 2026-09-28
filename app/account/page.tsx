@@ -132,7 +132,7 @@ export default function AccountPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="আপনার নাম"
-              className="rounded bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md"
+              className="rounded-full bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md"
             />
           )}
           <input
@@ -140,20 +140,20 @@ export default function AccountPage() {
             onChange={(e) => setPhone(e.target.value)}
             placeholder="মোবাইল নম্বর (017XXXXXXXX)"
             type="tel"
-            className="rounded bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md"
+            className="rounded-full bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md"
           />
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="পাসওয়ার্ড"
             type="password"
-            className="rounded bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md"
+            className="rounded-full bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md"
           />
           {error && <p className="text-body-sm text-red-400">{error}</p>}
           <button
             onClick={submit}
             disabled={busy}
-            className="rounded bg-cyan text-surface-lowest py-3 font-bn font-semibold disabled:opacity-60"
+            className="rounded-full bg-cyan text-surface-lowest py-3 font-bn font-semibold disabled:opacity-60"
           >
             {busy ? "অপেক্ষা করুন..." : mode === "login" ? "লগইন" : "অ্যাকাউন্ট খুলুন"}
           </button>
@@ -180,7 +180,7 @@ export default function AccountPage() {
         </div>
         <button
           onClick={() => supabase.auth.signOut()}
-          className="flex items-center gap-1.5 rounded border border-outline-soft px-3 py-2 text-body-sm text-on-surface-variant"
+          className="flex items-center gap-1.5 rounded-full border border-outline-soft px-3 py-2 text-body-sm text-on-surface-variant"
         >
           <LogOut className="h-4 w-4" /> লগআউট
         </button>
@@ -195,7 +195,7 @@ export default function AccountPage() {
           <div key={o.id} className="glass-card rounded-lg p-3">
             <div className="flex justify-between">
               <span className="font-mono text-cyan">#{o.order_number}</span>
-              <span className="chip-spec rounded font-mono">{STATUS_BN[o.status] ?? o.status}</span>
+              <span className="chip-spec rounded-full font-mono">{STATUS_BN[o.status] ?? o.status}</span>
             </div>
             <p className="mt-1 text-body-sm text-on-surface-variant">
               {o.items.map((i) => `${i.title} ×${i.qty}`).join(", ")}

@@ -82,7 +82,7 @@ export default function ProductView({ product }: { product: Product }) {
             <button
               key={src}
               onClick={() => setActiveImage(i)}
-              className={`relative h-16 w-16 shrink-0 rounded overflow-hidden border ${
+              className={`relative h-16 w-16 shrink-0 rounded-md overflow-hidden border ${
                 i === activeImage ? "border-cyan" : "border-outline-soft"
               }`}
             >
@@ -94,9 +94,9 @@ export default function ProductView({ product }: { product: Product }) {
 
       {/* Title block */}
       <div className="mt-4 flex items-center gap-2">
-        <span className="chip-spec rounded font-mono">SKU: {product.sku}</span>
+        <span className="chip-spec rounded-full font-mono">SKU: {product.sku}</span>
         <span
-          className={`rounded px-2 py-0.5 text-label-mono-sm font-mono border ${
+          className={`rounded-full px-2 py-0.5 text-label-mono-sm font-mono border ${
             product.inStock ? "chip-stock" : "border-red-500/40 text-red-400"
           }`}
         >
@@ -124,7 +124,7 @@ export default function ProductView({ product }: { product: Product }) {
           </p>
         )}
         {discount > 0 && (
-          <span className="ml-auto rounded bg-violet-soft border border-violet/40 text-[#d8b4fe] px-2 py-0.5 font-mono text-label-mono-md">
+          <span className="ml-auto rounded-full bg-violet-soft border border-violet/40 text-violet px-2 py-0.5 font-mono text-label-mono-md">
             {toBengaliNumber(discount)}% ছাড়
           </span>
         )}
@@ -136,7 +136,7 @@ export default function ProductView({ product }: { product: Product }) {
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`flex-1 rounded py-2 text-body-sm font-medium transition-colors ${
+            className={`flex-1 rounded-full py-2 text-body-sm font-medium transition-colors ${
               tab === t.id ? "bg-cyan-soft text-cyan" : "text-on-surface-variant"
             }`}
           >
@@ -169,7 +169,7 @@ export default function ProductView({ product }: { product: Product }) {
               <p className="text-body-sm text-on-surface-variant">পিনআউট তথ্য নেই।</p>
             )}
             {product.pinout.map((p) => (
-              <span key={p.pin} className="chip-spec rounded font-mono py-1 px-2">
+              <span key={p.pin} className="chip-spec rounded-full font-mono py-1 px-2">
                 {p.pin} <span className="text-cyan">[{p.voltage}]</span>
               </span>
             ))}
@@ -190,7 +190,7 @@ export default function ProductView({ product }: { product: Product }) {
             {product.bundleItems.map((item, i) => (
               <label
                 key={item.title}
-                className="flex items-center gap-3 rounded bg-surface-lowest/60 p-2.5 cursor-pointer"
+                className="flex items-center gap-3 rounded-md bg-surface-container p-2.5 cursor-pointer"
               >
                 <input
                   type="checkbox"
@@ -199,7 +199,7 @@ export default function ProductView({ product }: { product: Product }) {
                   onChange={() =>
                     setChecked((prev) => prev.map((v, idx) => (idx === i ? !v : v)))
                   }
-                  className="h-4 w-4 accent-[#00f0ff]"
+                  className="h-4 w-4 accent-[#059669]"
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-body-md text-on-surface">{item.title}</p>
@@ -222,7 +222,7 @@ export default function ProductView({ product }: { product: Product }) {
               </div>
               <button
                 onClick={addBundle}
-                className="rounded bg-violet text-white px-4 py-2.5 font-bn font-medium text-body-md"
+                className="rounded-full bg-violet text-white px-4 py-2.5 font-bn font-medium text-body-md"
               >
                 একসাথে কিনুন
               </button>
@@ -234,7 +234,7 @@ export default function ProductView({ product }: { product: Product }) {
       {/* Sticky buy bar */}
       <div className="fixed bottom-0 inset-x-0 z-40 bg-surface-lowest/95 backdrop-blur-md border-t border-outline-soft px-margin py-3 md:bottom-0">
         <div className="max-w-3xl mx-auto flex items-center gap-2">
-          <div className="flex items-center rounded border border-outline-soft">
+          <div className="flex items-center rounded-full border border-outline-soft">
             <button
               aria-label="কমান"
               onClick={() => setQty((q) => Math.max(1, q - 1))}
@@ -254,14 +254,14 @@ export default function ProductView({ product }: { product: Product }) {
           <button
             onClick={add}
             disabled={!product.inStock}
-            className="flex-1 btn-cyan rounded h-10 flex items-center justify-center gap-1.5 font-bn text-body-md disabled:opacity-40"
+            className="flex-1 btn-cyan h-10 flex items-center justify-center gap-1.5 font-bn text-body-md disabled:opacity-40"
           >
             <ShoppingCart className="h-4 w-4" /> কার্ট
           </button>
           <button
             onClick={buyNow}
             disabled={!product.inStock}
-            className="flex-1 rounded h-10 bg-cyan text-surface-lowest flex items-center justify-center gap-1.5 font-bn font-semibold text-body-md disabled:opacity-40"
+            className="flex-1 rounded-full h-10 bg-cyan text-surface-lowest flex items-center justify-center gap-1.5 font-bn font-semibold text-body-md disabled:opacity-40"
           >
             <Zap className="h-4 w-4" /> এখনই কিনুন
           </button>

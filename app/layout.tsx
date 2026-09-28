@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_Bengali, JetBrains_Mono } from "next/font/google";
+import {
+  Noto_Sans_Bengali,
+  JetBrains_Mono,
+  Space_Grotesk,
+  Plus_Jakarta_Sans,
+} from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/layout/SiteHeader";
 import BottomNav from "@/components/layout/BottomNav";
@@ -9,6 +14,20 @@ const notoSansBengali = Noto_Sans_Bengali({
   subsets: ["bengali", "latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-bengali",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
   display: "swap",
 });
 
@@ -33,7 +52,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
-  themeColor: "#0e1321",
+  themeColor: "#F3F8F6",
 };
 
 export default function RootLayout({
@@ -42,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="bn" className={`dark ${notoSansBengali.variable} ${jetbrainsMono.variable}`}>
+    <html lang="bn" className={`${notoSansBengali.variable} ${spaceGrotesk.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}>
       <body className="font-bn bg-background text-on-surface min-h-screen flex flex-col">
         <CartProvider>
           <SiteHeader />

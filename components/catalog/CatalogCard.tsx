@@ -14,7 +14,7 @@ export default function CatalogCard({ product }: { product: Product }) {
           SKU: {sku}
         </span>
         <span
-          className={`rounded px-2 py-0.5 text-label-mono-sm font-mono border ${
+          className={`rounded-full px-2 py-0.5 text-label-mono-sm font-mono border ${
             inStock
               ? "chip-stock"
               : "bg-red-500/10 border-red-500/40 text-red-400"
@@ -34,7 +34,7 @@ export default function CatalogCard({ product }: { product: Product }) {
           </h3>
           <div className="flex flex-wrap gap-1.5 mt-1.5">
             {specs.map((s) => (
-              <span key={s} className="chip-spec rounded font-mono">
+              <span key={s} className="chip-spec rounded-full font-mono">
                 {s}
               </span>
             ))}
@@ -43,7 +43,7 @@ export default function CatalogCard({ product }: { product: Product }) {
       </Link>
 
       {pinout.length > 0 && (
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded bg-surface-lowest/70 border border-outline-soft px-2.5 py-1.5 font-mono text-label-mono-sm text-on-surface-variant">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-md bg-surface-container border border-outline-soft px-2.5 py-1.5 font-mono text-label-mono-sm text-on-surface-variant">
           <span className="text-on-surface-muted">PINOUT:</span>
           {pinout.map((p) => (
             <span key={p.pin}>

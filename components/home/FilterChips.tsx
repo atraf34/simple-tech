@@ -12,7 +12,7 @@ export default function FilterChips() {
         {filterTags.map((tag) => (
           <button
             key={tag}
-            className="shrink-0 chip-spec rounded px-2.5 py-1 text-label-mono-md font-mono hover:border-cyan/40 hover:text-cyan transition-colors"
+            className="shrink-0 chip-spec rounded-full px-2.5 py-1 text-label-mono-md font-mono hover:border-cyan/40 hover:text-cyan transition-colors"
           >
             #{tag}
           </button>

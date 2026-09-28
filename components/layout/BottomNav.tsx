@@ -49,7 +49,7 @@ export default function BottomNav() {
                 <Icon
                   className="h-5 w-5"
                   strokeWidth={active ? 2 : 1.75}
-                  fill={active ? "rgba(0,240,255,0.15)" : "none"}
+                  fill={active ? "rgba(0,210,133,0.18)" : "none"}
                 />
                 {showBadge ? (
                   <span className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-violet text-white text-[9px] font-bold flex items-center justify-center">

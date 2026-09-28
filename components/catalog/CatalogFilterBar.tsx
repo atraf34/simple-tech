@@ -31,7 +31,7 @@ export default function CatalogFilterBar() {
           <button
             key={v}
             onClick={() => updateParam("voltage", voltage === v ? null : v)}
-            className={`shrink-0 rounded px-2.5 py-1 text-label-mono-md font-mono border transition-colors ${
+            className={`shrink-0 rounded-full px-2.5 py-1 text-label-mono-md font-mono border transition-colors ${
               voltage === v
                 ? "bg-cyan text-surface-lowest border-cyan"
                 : "chip-spec hover:border-cyan/40 hover:text-cyan"
@@ -50,10 +50,10 @@ export default function CatalogFilterBar() {
           <button
             key={b}
             onClick={() => updateParam("bus", bus === b ? null : b)}
-            className={`shrink-0 rounded px-2.5 py-1 text-label-mono-md font-mono border transition-colors ${
+            className={`shrink-0 rounded-full px-2.5 py-1 text-label-mono-md font-mono border transition-colors ${
               bus === b
                 ? "bg-violet text-white border-violet"
-                : "chip-spec hover:border-violet/40 hover:text-[#d8b4fe]"
+                : "chip-spec hover:border-violet/40 hover:text-violet"
             }`}
           >
             {b}
@@ -62,7 +62,7 @@ export default function CatalogFilterBar() {
 
         <button
           onClick={() => updateParam("inStock", inStockOnly ? null : "1")}
-          className={`shrink-0 rounded px-2.5 py-1 text-label-mono-md font-mono border transition-colors ml-auto ${
+          className={`shrink-0 rounded-full px-2.5 py-1 text-label-mono-md font-mono border transition-colors ml-auto ${
             inStockOnly
               ? "chip-stock"
               : "chip-spec hover:border-emerald/40 hover:text-emerald-light"

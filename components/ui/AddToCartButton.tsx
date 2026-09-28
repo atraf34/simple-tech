@@ -26,7 +26,7 @@ export default function AddToCartButton({
         setAdded(true);
         setTimeout(() => setAdded(false), 1200);
       }}
-      className="btn-cyan rounded flex items-center justify-center gap-1.5 px-4 py-2.5 font-bn text-body-md font-medium disabled:opacity-40 disabled:pointer-events-none"
+      className="btn-cyan flex items-center justify-center gap-1.5 px-4 py-2.5 font-bn text-body-md font-medium disabled:opacity-40 disabled:pointer-events-none"
     >
       {added ? (
         <Check className="h-4 w-4" strokeWidth={2.5} />

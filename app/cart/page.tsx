@@ -13,7 +13,7 @@ export default function CartPage() {
       <div className="px-margin py-16 text-center">
         <ShoppingCart className="h-10 w-10 mx-auto text-on-surface-muted" />
         <p className="mt-3 font-bn text-headline-sm text-on-surface">আপনার কার্ট খালি</p>
-        <Link href="/catalog" className="btn-cyan inline-block mt-4 rounded px-5 py-2.5 font-bn">
+        <Link href="/catalog" className="btn-cyan inline-block mt-4 rounded-full px-5 py-2.5 font-bn">
           প্রোডাক্ট দেখুন
         </Link>
       </div>
@@ -32,7 +32,7 @@ export default function CartPage() {
                 {formatBDT(item.price)}
               </p>
             </div>
-            <div className="flex items-center rounded border border-outline-soft">
+            <div className="flex items-center rounded-full border border-outline-soft">
               <button
                 aria-label="কমান"
                 onClick={() => setQty(item.slug, item.qty - 1)}
@@ -67,7 +67,7 @@ export default function CartPage() {
 
       <Link
         href="/checkout"
-        className="mt-4 block text-center rounded bg-cyan text-surface-lowest py-3 font-bn font-semibold text-body-lg"
+        className="mt-4 block text-center rounded-full bg-cyan text-surface-lowest py-3 font-bn font-semibold text-body-lg"
       >
         চেকআউট করুন
       </Link>

@@ -20,8 +20,8 @@ const STATUS_BN: Record<string, string> = {
   pending: "অপেক্ষমান", confirmed: "নিশ্চিত", shipped: "শিপড", delivered: "ডেলিভারড", cancelled: "বাতিল",
 };
 
-const input = "rounded bg-surface-lowest border border-outline-soft px-3 py-2 text-body-md w-full";
-const btn = "btn-cyan rounded px-4 py-2 text-body-sm font-medium";
+const input = "rounded-full bg-surface-lowest border border-outline-soft px-3 py-2 text-body-md w-full";
+const btn = "btn-cyan px-4 py-2 text-body-sm font-medium";
 
 async function api(path: string, method = "GET", body?: unknown) {
   const res = await fetch(path, {
@@ -60,7 +60,7 @@ export default function AdminDashboard() {
           <p className="font-mono text-label-mono-sm text-cyan">SiMPLE TECHNOLOGIES // ADMIN</p>
           <h1 className="font-bn font-bold text-headline-md">ম্যানেজমেন্ট প্যানেল</h1>
         </div>
-        <button onClick={logout} className="rounded border border-outline-soft px-3 py-2 text-body-sm text-on-surface-variant">
+        <button onClick={logout} className="rounded-full border border-outline-soft px-3 py-2 text-body-sm text-on-surface-variant">
           লগআউট
         </button>
       </div>
@@ -70,7 +70,7 @@ export default function AdminDashboard() {
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`shrink-0 rounded px-4 py-2 text-body-sm font-medium ${
+            className={`shrink-0 rounded-full px-4 py-2 text-body-sm font-medium ${
               tab === t.id ? "bg-cyan-soft text-cyan" : "text-on-surface-variant"
             }`}
           >
@@ -137,12 +137,12 @@ function OrdersTab() {
           <div className="flex items-center justify-between gap-2 flex-wrap">
             <span className="font-mono text-body-lg">
               {formatBDT(Number(o.total))}{" "}
-              <span className="chip-spec rounded">{String(o.payment_method).toUpperCase()}</span>
+              <span className="chip-spec rounded-full">{String(o.payment_method).toUpperCase()}</span>
             </span>
             <select
               value={o.status}
               onChange={(e) => update(o.id, { status: e.target.value })}
-              className="rounded bg-surface-lowest border border-outline-soft px-2 py-1.5 text-body-sm"
+              className="rounded-full bg-surface-lowest border border-outline-soft px-2 py-1.5 text-body-sm"
             >
               {STATUSES.map((s) => (
                 <option key={s} value={s}>{STATUS_BN[s]}</option>
@@ -200,7 +200,7 @@ function ClientsTab() {
           <div className="mt-3 flex flex-col gap-2 text-body-sm">
             <p className="text-on-surface-variant">মোট অর্ডার: {c.orders.length}</p>
             {c.orders.map((o: any) => (
-              <div key={o.id} className="rounded bg-surface-lowest/60 p-2">
+              <div key={o.id} className="rounded-full bg-surface-container p-2">
                 <span className="font-mono text-cyan">#{o.order_number}</span> · {STATUS_BN[o.status]} · {formatBDT(Number(o.total))}
                 {o.admin_note && <p className="text-on-surface-variant mt-0.5">নোট: {o.admin_note}</p>}
               </div>

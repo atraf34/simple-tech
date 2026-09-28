@@ -37,12 +37,12 @@ export default async function ProjectKits() {
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap gap-1.5 mb-1">
                 {kit.kitLevel && (
-                  <span className="chip-spec rounded font-mono">
+                  <span className="chip-spec rounded-full font-mono">
                     লেভেল: {kit.kitLevel}
                   </span>
                 )}
                 {kit.kitTag && (
-                  <span className="bg-violet-soft border border-violet/30 text-[#d8b4fe] rounded px-1.5 py-0.5 text-label-mono-sm font-mono">
+                  <span className="bg-violet-soft border border-violet/30 text-violet rounded-full px-1.5 py-0.5 text-label-mono-sm font-mono">
                     {kit.kitTag}
                   </span>
                 )}
@@ -57,7 +57,7 @@ export default async function ProjectKits() {
                 <p className="font-mono text-price-display text-on-surface">
                   {formatBDT(kit.price)}
                 </p>
-                <span className="btn-cyan rounded px-3 py-1.5 text-label-mono-md font-mono font-medium shrink-0 inline-block">
+                <span className="btn-cyan px-3 py-1.5 text-label-mono-md font-mono font-medium shrink-0 inline-block">
                   অর্ডার করুন
                 </span>
               </div>

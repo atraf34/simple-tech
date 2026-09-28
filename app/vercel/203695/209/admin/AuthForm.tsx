@@ -29,7 +29,7 @@ export default function AuthForm({ mode }: { mode: "login" | "setup" }) {
     router.refresh();
   }
 
-  const input = "rounded bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md";
+  const input = "rounded-full bg-surface-lowest border border-outline-soft px-3 py-2.5 text-body-md";
 
   return (
     <div className="min-h-screen flex items-center justify-center px-margin">
@@ -44,7 +44,7 @@ export default function AuthForm({ mode }: { mode: "login" | "setup" }) {
           <input className={input} placeholder="Setup Key (ADMIN_SETUP_KEY)" value={setupKey} onChange={(e) => setSetupKey(e.target.value)} type="password" />
         )}
         {error && <p className="text-body-sm text-red-400">{error}</p>}
-        <button disabled={busy} className="rounded bg-cyan text-surface-lowest py-3 font-bn font-semibold disabled:opacity-60">
+        <button disabled={busy} className="rounded-full bg-cyan text-surface-lowest py-3 font-bn font-semibold disabled:opacity-60">
           {busy ? "অপেক্ষা করুন..." : mode === "login" ? "লগইন" : "অ্যাডমিন তৈরি করুন"}
         </button>
       </form>

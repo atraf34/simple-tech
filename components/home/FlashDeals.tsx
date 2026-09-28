@@ -10,7 +10,7 @@ export default async function FlashDeals() {
     <section className="mt-8 px-margin md:px-margin-desktop">
       <div className="flex items-center justify-between mb-3">
         <h2 className="flex items-center gap-1.5 font-bn font-semibold text-headline-sm text-on-surface">
-          <Zap className="h-4.5 w-4.5 text-cyan" strokeWidth={2} fill="rgba(0,240,255,0.3)" />
+          <Zap className="h-4.5 w-4.5 text-cyan" strokeWidth={2} fill="rgba(0,210,133,0.35)" />
           ফ্ল্যাশ সেল — সীমিত সময়
         </h2>
         <CountdownTimer targetHours={2} />

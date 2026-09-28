@@ -1,9 +1,9 @@
 import type { Config } from "tailwindcss";
 
 // Tokens lifted 1:1 from the Stitch design export
-// (cyber_minimalist_bengali_robotics/DESIGN.md)
+// (luminescent_precision/DESIGN.md)
 const config: Config = {
-  darkMode: "class",
+  
   content: [
     "./app/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -11,41 +11,47 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Surface / elevation layers
-        background: "#0e1321",
-        surface: "#0e1321",
-        "surface-lowest": "#090e1c",
-        "surface-low": "#161b2a",
-        "surface-container": "#1a1f2e",
-        "surface-high": "#252a39",
-        "surface-highest": "#303444",
-        outline: "#3b494b",
-        "outline-soft": "rgba(148, 163, 184, 0.2)",
+        // Luminescent Precision: light ice-mint canvas, emerald actions
+        background: "#F3F8F6",
+        surface: "#F3F8F6",
+        "surface-lowest": "#FFFFFF",
+        "surface-low": "#F0F5F3",
+        "surface-container": "#F8FAFC",
+        "surface-high": "#EAEFED",
+        "surface-highest": "#DEE4E2",
+        outline: "#CBD5E1",
+        "outline-soft": "#E2E8F0",
 
-        // Text
-        "on-surface": "#f8fafc",
-        "on-surface-variant": "#94a3b8",
-        "on-surface-muted": "#475569",
+        "on-surface": "#0F172A",
+        "on-surface-variant": "#334155",
+        "on-surface-muted": "#94A3B8",
 
-        // Brand accents (exact hex from the brief)
+        // Legacy token names are kept so every page inherits the new palette.
+        // cyan = primary emerald, violet = tertiary slate, emerald = electric mint.
         cyan: {
-          DEFAULT: "#00f0ff",
-          soft: "rgba(0, 240, 255, 0.12)",
-          border: "rgba(0, 240, 255, 0.18)",
+          DEFAULT: "#059669",
+          dark: "#047857",
+          deep: "#006948",
+          soft: "#E6F9F2",
+          border: "rgba(0, 210, 133, 0.3)",
         },
         violet: {
-          DEFAULT: "#8b5cf6",
-          soft: "rgba(139, 92, 246, 0.12)",
-          border: "rgba(139, 92, 246, 0.25)",
+          DEFAULT: "#545C72",
+          soft: "#EEF1F8",
+          border: "rgba(84, 92, 114, 0.25)",
         },
         emerald: {
-          DEFAULT: "#10b981",
-          soft: "rgba(16, 185, 129, 0.12)",
-          light: "#34d399",
+          DEFAULT: "#00D285",
+          soft: "#E6F9F2",
+          light: "#047857",
         },
+        mint: "#00D285",
+        brand: "#0F172A",
+        logo: "#0060FF",
       },
       fontFamily: {
-        bn: ["var(--font-bengali)", "Hind Siliguri", "sans-serif"],
+        bn: ["var(--font-body)", "var(--font-bengali)", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-bengali)", "sans-serif"],
         mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
       },
       fontSize: {
@@ -64,10 +70,10 @@ const config: Config = {
         "price-display": ["20px", { lineHeight: "26px", fontWeight: "700" }],
       },
       borderRadius: {
-        DEFAULT: "0.25rem",
-        md: "0.375rem",
-        lg: "0.5rem",
-        xl: "0.75rem",
+        DEFAULT: "0.5rem",
+        md: "0.75rem",
+        lg: "1rem",
+        xl: "1.5rem",
       },
       spacing: {
         gutter: "1.25rem",
@@ -77,8 +83,9 @@ const config: Config = {
         "margin-desktop": "3.5rem",
       },
       boxShadow: {
-        "glow-cyan": "0 0 24px -4px rgba(0, 240, 255, 0.35)",
-        "glow-violet": "0 0 30px 0 rgba(139, 92, 246, 0.2)",
+        "glow-cyan": "0 8px 20px -4px rgba(0, 210, 133, 0.35)",
+        "glow-violet": "0 12px 32px -4px rgba(5, 150, 105, 0.08)",
+        card: "0 4px 20px -2px rgba(15, 23, 42, 0.04)",
       },
       backdropBlur: {
         xs: "2px",
