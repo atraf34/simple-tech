@@ -5,8 +5,8 @@ export default async function HeroBanner() {
   const content = await getHeroBanner();
 
   return (
-    <section className="px-margin md:px-margin-desktop pt-5">
-      <div className="relative overflow-hidden rounded-xl border border-outline-soft bg-gradient-to-br from-white via-white to-cyan-soft p-6 md:p-12 shadow-card">
+    <section className="px-margin md:px-margin-desktop lg:pl-8 pt-5">
+      <div className="relative overflow-hidden rounded-xl border border-outline-soft bg-gradient-to-br from-white via-cyan-soft to-[#E8F0FF] p-6 md:p-12 shadow-card">
         {/* faint calibration rings, echoing the precision-instrument theme */}
         <svg
           aria-hidden
@@ -21,7 +21,11 @@ export default async function HeroBanner() {
           <path d="M100 0v200M0 100h200" strokeDasharray="2 6" />
         </svg>
 
-        <div className="relative max-w-xl">
+        <span className="orb h-56 w-56 -left-10 -bottom-16 bg-mint/40" />
+        <span className="orb h-48 w-48 right-10 top-4 bg-[#2563EB]/25 [animation-delay:-5s]" />
+        <span className="orb h-44 w-44 right-1/3 -bottom-10 bg-[#7C3AED]/20 [animation-delay:-9s]" />
+
+        <div className="frosted frost-in relative max-w-xl rounded-xl border p-5 md:p-7">
           <span className="inline-flex items-center gap-2 rounded-full border border-cyan-border bg-cyan-soft px-3 py-1 text-label-mono-sm font-mono text-cyan">
             <span className="stock-dot" />
             {content.eyebrow}

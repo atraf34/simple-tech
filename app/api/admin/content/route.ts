@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin-guard";
 
-const ALLOWED_KEYS = ["hero_banner", "marquee_offers"];
+const ALLOWED_KEYS = ["hero_banner", "marquee_offers", "home_slides"];
 
 export async function GET(req: Request) {
   const guard = await requireAdmin(req);

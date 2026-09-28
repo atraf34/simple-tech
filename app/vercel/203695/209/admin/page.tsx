@@ -4,13 +4,22 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { formatBDT } from "@/lib/format";
 import { ADMIN_BASE } from "@/lib/admin-config";
+import { CATEGORY_ICONS, CATEGORY_COLORS, CategoryIcon } from "@/lib/category-style";
+import AdminOverview from "./AdminOverview";
+import AdminSlides from "./AdminSlides";
+import AdminProducts from "./AdminProducts";
+import AdminAccounts from "./AdminAccounts";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-type Tab = "orders" | "clients" | "products" | "content" | "warranty";
+type Tab = "overview" | "slides" | "accounts" | "orders" | "clients" | "categories" | "products" | "content" | "warranty";
 const TABS: { id: Tab; label: string }[] = [
+  { id: "overview", label: "ড্যাশবোর্ড" },
+  { id: "slides", label: "হোম স্লাইডার" },
   { id: "orders", label: "অর্ডার" },
   { id: "clients", label: "ক্লায়েন্ট" },
+  { id: "accounts", label: "অ্যাকাউন্ট" },
+  { id: "categories", label: "ক্যাটাগরি" },
   { id: "products", label: "প্রোডাক্ট" },
   { id: "content", label: "কনটেন্ট" },
   { id: "warranty", label: "ওয়ারেন্টি" },
@@ -46,7 +55,7 @@ async function uploadFile(file: File, folder: string): Promise<string> {
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const [tab, setTab] = useState<Tab>("orders");
+  const [tab, setTab] = useState<Tab>("overview");
 
   async function logout() {
     await api("/api/admin/logout", "POST");
@@ -54,7 +63,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-margin pt-5 pb-16">
+    <div className="max-w-6xl mx-auto px-margin pt-5 pb-16">
       <div className="flex items-center justify-between">
         <div>
           <p className="font-mono text-label-mono-sm text-cyan">SiMPLE TECHNOLOGIES // ADMIN</p>
@@ -80,9 +89,13 @@ export default function AdminDashboard() {
       </div>
 
       <div className="mt-4">
+        {tab === "overview" && <AdminOverview go={setTab} />}
+        {tab === "slides" && <AdminSlides />}
         {tab === "orders" && <OrdersTab />}
         {tab === "clients" && <ClientsTab />}
-        {tab === "products" && <ProductsTab />}
+        {tab === "accounts" && <AdminAccounts />}
+        {tab === "categories" && <CategoriesTab />}
+        {tab === "products" && <AdminProducts />}
         {tab === "content" && <ContentTab />}
         {tab === "warranty" && <WarrantyTab />}
       </div>
@@ -221,112 +234,70 @@ function ClientsTab() {
 }
 
 /* ------------------------------ Products ------------------------------ */
-function ProductsTab() {
-  const [products, setProducts] = useState<any[]>([]);
+function CategoriesTab() {
+  const [cats, setCats] = useState<any[]>([]);
   const [msg, setMsg] = useState("");
-  const [form, setForm] = useState({ title: "", slug: "", sku: "", price: "", categorySlug: "", description: "", youtubeUrl: "", image: "" });
-  const [uploading, setUploading] = useState(false);
+  const [form, setForm] = useState({ label: "", slug: "", icon: "layers", color: "emerald" });
 
   const load = useCallback(async () => {
-    try {
-      setProducts((await api("/api/admin/products")).products);
-    } catch (e: any) {
-      setMsg(e.message);
-    }
+    try { setCats((await api("/api/admin/categories")).categories); } catch (e: any) { setMsg(e.message); }
   }, []);
   useEffect(() => { load(); }, [load]);
 
-  async function patch(id: string, p: any) {
-    try {
-      await api("/api/admin/products", "PATCH", { id, ...p });
-      setMsg("সেভ হয়েছে ✓");
-      load();
-    } catch (e: any) {
-      setMsg(e.message);
-    }
-  }
-
-  async function create() {
-    try {
-      await api("/api/admin/products", "POST", form);
-      setForm({ title: "", slug: "", sku: "", price: "", categorySlug: "", description: "", youtubeUrl: "", image: "" });
-      setMsg("প্রোডাক্ট যোগ হয়েছে ✓");
-      load();
-    } catch (e: any) {
-      setMsg(e.message);
-    }
+  async function run(fn: () => Promise<any>, ok: string) {
+    try { await fn(); setMsg(ok); load(); } catch (e: any) { setMsg(e.message); }
   }
 
   return (
     <div className="flex flex-col gap-4">
       {msg && <p className="text-body-sm text-cyan">{msg}</p>}
-
-      <details className="glass-card rounded-lg p-3">
-        <summary className="cursor-pointer font-medium">＋ নতুন প্রোডাক্ট যোগ করুন</summary>
-        <div className="mt-3 grid gap-2 sm:grid-cols-2">
-          {(["title", "slug", "sku", "price", "categorySlug", "youtubeUrl"] as const).map((k) => (
-            <input
-              key={k}
-              className={input}
-              placeholder={{ title: "প্রোডাক্টের নাম", slug: "slug (ইংরেজি, যেমন esp32-board)", sku: "SKU", price: "দাম (৳)", categorySlug: "ক্যাটাগরি slug (যেমন sensors)", youtubeUrl: "YouTube লিংক (ঐচ্ছিক)" }[k]}
-              value={form[k]}
-              onChange={(e) => setForm({ ...form, [k]: e.target.value })}
-            />
-          ))}
-          <textarea className={`${input} sm:col-span-2`} placeholder="বিবরণ" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-          <div className="sm:col-span-2 flex items-center gap-2">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={async (e) => {
-                const f = e.target.files?.[0];
-                if (!f) return;
-                setUploading(true);
-                try {
-                  setForm({ ...form, image: await uploadFile(f, "products") });
-                } catch (err: any) {
-                  setMsg(err.message);
-                }
-                setUploading(false);
-              }}
-              className="text-body-sm"
-            />
-            {uploading && <span className="text-body-sm">আপলোড হচ্ছে...</span>}
-            {form.image && <span className="text-body-sm text-emerald-light">ছবি যোগ হয়েছে ✓</span>}
-          </div>
-          <button className={btn} onClick={create}>প্রোডাক্ট সেভ করুন</button>
+      <div className="glass-card rounded-lg p-4 flex flex-col gap-3">
+        <p className="font-medium">＋ নতুন ক্যাটাগরি (বাম মেনুতে দেখাবে)</p>
+        <div className="grid gap-2 sm:grid-cols-2">
+          <input className={input} placeholder="ক্যাটাগরির নাম (যেমন ড্রোন পার্টস)" value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value })} />
+          <input className={input} placeholder="slug (ইংরেজি, যেমন drone-parts)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
         </div>
-      </details>
+        <div className="flex flex-wrap gap-2">
+          {Object.keys(CATEGORY_ICONS).map((k) => (
+            <button key={k} type="button" onClick={() => setForm({ ...form, icon: k })} aria-label={k}
+              className={`rounded-full p-0.5 border-2 ${form.icon === k ? "border-cyan" : "border-transparent"}`}>
+              <CategoryIcon icon={k} color={form.color} size={34} />
+            </button>
+          ))}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {Object.entries(CATEGORY_COLORS).map(([k, c]) => (
+            <button key={k} type="button" onClick={() => setForm({ ...form, color: k })} aria-label={k}
+              className={`h-8 w-8 rounded-full border-2 ${form.color === k ? "border-brand scale-110" : "border-white"}`}
+              style={{ background: c.fg }} />
+          ))}
+        </div>
+        <button className={btn} onClick={() => run(async () => { await api("/api/admin/categories", "POST", form); setForm({ label: "", slug: "", icon: "layers", color: "emerald" }); }, "ক্যাটাগরি যোগ হয়েছে ✓")}>
+          ক্যাটাগরি যোগ করুন
+        </button>
+      </div>
 
-      {products.map((p) => (
-        <ProductRow key={p.id} p={p} onPatch={patch} />
+      {cats.map((c) => (
+        <div key={c.slug} className="glass-card rounded-lg p-3 flex items-center gap-3">
+          <CategoryIcon icon={c.icon} color={c.color} size={40} />
+          <div className="flex-1 min-w-0">
+            <p className="font-medium truncate">{c.label}</p>
+            <p className="font-mono text-label-mono-sm text-on-surface-variant">{c.slug}</p>
+          </div>
+          <div className="flex gap-1">
+            {Object.entries(CATEGORY_COLORS).map(([k, col]) => (
+              <button key={k} aria-label={k} onClick={() => run(() => api("/api/admin/categories", "PATCH", { slug: c.slug, color: k }), "রং বদলেছে ✓")}
+                className={`h-4 w-4 rounded-full ${c.color === k ? "ring-2 ring-brand" : ""}`} style={{ background: col.fg }} />
+            ))}
+          </div>
+          <button
+            className="text-body-sm text-red-600"
+            onClick={() => confirm(`"${c.label}" মুছবেন? প্রোডাক্টগুলো থাকবে, শুধু ক্যাটাগরি খালি হবে।`) && run(() => api("/api/admin/categories", "DELETE", { slug: c.slug }), "মুছে ফেলা হয়েছে")}
+          >
+            মুছুন
+          </button>
+        </div>
       ))}
-    </div>
-  );
-}
-
-function ProductRow({ p, onPatch }: { p: any; onPatch: (id: string, patch: any) => void }) {
-  const [price, setPrice] = useState(String(p.price));
-  const [yt, setYt] = useState(p.youtube_url ?? "");
-  return (
-    <div className="glass-card rounded-lg p-3 flex flex-col gap-2">
-      <div className="flex justify-between gap-2">
-        <span className="text-body-md">{p.title}</span>
-        <span className="font-mono text-label-mono-sm text-on-surface-variant">{p.sku}</span>
-      </div>
-      <div className="grid gap-2 sm:grid-cols-[120px_1fr_auto]">
-        <input className={input} value={price} onChange={(e) => setPrice(e.target.value)} inputMode="numeric" />
-        <input className={input} placeholder="YouTube ভিডিও লিংক" value={yt} onChange={(e) => setYt(e.target.value)} />
-        <button className={btn} onClick={() => onPatch(p.id, { price, youtubeUrl: yt })}>সেভ</button>
-      </div>
-      <div className="flex gap-4 text-body-sm">
-        <label className="flex items-center gap-1.5">
-          <input type="checkbox" checked={p.in_stock} onChange={(e) => onPatch(p.id, { inStock: e.target.checked })} /> ইন-স্টক
-        </label>
-        <label className="flex items-center gap-1.5">
-          <input type="checkbox" checked={p.is_flash_deal} onChange={(e) => onPatch(p.id, { isFlashDeal: e.target.checked })} /> ফ্ল্যাশ ডিল
-        </label>
-      </div>
     </div>
   );
 }

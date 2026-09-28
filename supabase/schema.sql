@@ -12,8 +12,10 @@ create table if not exists categories (
   slug text primary key,
   label text not null,
   icon text not null,
+  color text not null default 'emerald',
   sort_order int not null default 0
 );
+alter table categories add column if not exists color text not null default 'emerald';
 
 -- ---------- products ----------
 create table if not exists products (

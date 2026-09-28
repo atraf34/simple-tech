@@ -8,6 +8,8 @@ import {
 import "./globals.css";
 import SiteHeader from "@/components/layout/SiteHeader";
 import BottomNav from "@/components/layout/BottomNav";
+import CategorySidebar from "@/components/layout/CategorySidebar";
+import { NavDrawerProvider } from "@/lib/nav-context";
 import { CartProvider } from "@/lib/cart-context";
 
 const notoSansBengali = Noto_Sans_Bengali({
@@ -64,9 +66,14 @@ export default function RootLayout({
     <html lang="bn" className={`${notoSansBengali.variable} ${spaceGrotesk.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}>
       <body className="font-bn bg-background text-on-surface min-h-screen flex flex-col">
         <CartProvider>
-          <SiteHeader />
-          <main className="flex-1 pb-24 md:pb-0">{children}</main>
-          <BottomNav />
+          <NavDrawerProvider>
+            <SiteHeader />
+            <div className="flex-1 flex w-full max-w-[1440px] mx-auto">
+              <CategorySidebar />
+              <main className="flex-1 min-w-0 pb-24 md:pb-0">{children}</main>
+            </div>
+            <BottomNav />
+          </NavDrawerProvider>
         </CartProvider>
       </body>
     </html>

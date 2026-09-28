@@ -1,18 +1,18 @@
-import type { Category, Product, HeroBannerContent } from "@/lib/types";
+import type { Category, Product, HeroBannerContent, HomeSlides } from "@/lib/types";
 
 // Mirrors supabase/schema.sql seed data 1:1. Keep the two in sync if you
 // change one — this file is what renders the site before Supabase is
 // connected, and is also the safety net if a Supabase call ever fails.
 
 export const categories: Category[] = [
-  { slug: "robotics", label: "রোবোটিক্স", icon: "bot" },
-  { slug: "iot", label: "আইওটি ও কানেক্টিভিটি", icon: "wifi" },
-  { slug: "microcontrollers", label: "মাইক্রোকন্ট্রোলার", icon: "cpu" },
-  { slug: "sensors", label: "সেন্সর ও মডিউল", icon: "radio" },
-  { slug: "motors", label: "মোটর ও ড্রাইভার", icon: "cog" },
-  { slug: "power", label: "পাওয়ার ও ব্যাটারি", icon: "battery" },
-  { slug: "tools", label: "টুলস ও ল্যাব", icon: "wrench" },
-  { slug: "engineering-kits", label: "ইঞ্জিনিয়ারিং কিটস", icon: "layers" },
+  { slug: "robotics", label: "রোবোটিক্স", icon: "bot", color: "violet" },
+  { slug: "iot", label: "আইওটি ও কানেক্টিভিটি", icon: "wifi", color: "blue" },
+  { slug: "microcontrollers", label: "মাইক্রোকন্ট্রোলার", icon: "cpu", color: "emerald" },
+  { slug: "sensors", label: "সেন্সর ও মডিউল", icon: "radio", color: "cyan" },
+  { slug: "motors", label: "মোটর ও ড্রাইভার", icon: "cog", color: "orange" },
+  { slug: "power", label: "পাওয়ার ও ব্যাটারি", icon: "battery", color: "amber" },
+  { slug: "tools", label: "টুলস ও ল্যাব", icon: "wrench", color: "rose" },
+  { slug: "engineering-kits", label: "ইঞ্জিনিয়ারিং কিটস", icon: "layers", color: "pink" },
 ];
 
 export const filterTags = [
@@ -259,3 +259,14 @@ export const trustBadges = [
     icon: "graduation" as const,
   },
 ];
+
+// Shown until the admin adds real slides from the panel.
+export const homeSlides: HomeSlides = {
+  enabled: true,
+  intervalSec: 5,
+  slides: [
+    { id: "d1", image: "", badge: "ইঞ্জিনিয়ারিং কিটস", title: "প্রজেক্ট কিট — গাইড ও কোডসহ", subtitle: "IoT, রোবোটিক্স ও অটোমেশনের রেডি-টু-বিল্ড কিট", cta: "কিট দেখুন", link: "/catalog?category=engineering-kits", theme: "violet", active: true },
+    { id: "d2", image: "", badge: "ফ্ল্যাশ অফার", title: "সীমিত সময়ে ২৫% পর্যন্ত ছাড়", subtitle: "জনপ্রিয় সেন্সর ও মাইক্রোকন্ট্রোলারে বিশেষ দাম", cta: "অফার দেখুন", link: "/catalog", theme: "emerald", active: true },
+    { id: "d3", image: "", badge: "ডেলিভারি", title: "সারাদেশে ক্যাশ অন ডেলিভারি", subtitle: "ঢাকায় ২৪ ঘণ্টায়, ঢাকার বাইরে ৪৮-৭২ ঘণ্টায়", cta: "কেনাকাটা করুন", link: "/catalog", theme: "blue", active: true },
+  ],
+};

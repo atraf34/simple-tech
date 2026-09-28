@@ -4,6 +4,7 @@ import type {
   Category,
   Product,
   HeroBannerContent,
+  HomeSlides,
   CatalogFilters,
 } from "@/lib/types";
 
@@ -52,13 +53,21 @@ export async function getCategories(): Promise<Category[]> {
   const supabase = getSupabaseServerClient();
   if (!supabase) return mock.categories;
 
-  const { data, error } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let res: any = await supabase
     .from("categories")
-    .select("slug, label, icon")
+    .select("slug, label, icon, color")
     .order("sort_order");
+  // color column may not exist yet on older databases
+  if (res.error) {
+    res = await supabase
+      .from("categories")
+      .select("slug, label, icon")
+      .order("sort_order");
+  }
 
-  if (error || !data?.length) return mock.categories;
-  return data as Category[];
+  if (res.error || !res.data?.length) return mock.categories;
+  return res.data as Category[];
 }
 
 // ---------------------------------------------------------------------
@@ -91,6 +100,25 @@ export async function getMarqueeOffers(): Promise<string[]> {
 
   if (error || !data) return mock.marqueeOffers;
   return data.value as string[];
+}
+
+export async function getHomeSlides(): Promise<HomeSlides> {
+  const supabase = getSupabaseServerClient();
+  if (!supabase) return mock.homeSlides;
+
+  const { data, error } = await supabase
+    .from("site_content")
+    .select("value")
+    .eq("key", "home_slides")
+    .maybeSingle();
+
+  if (error || !data?.value) return mock.homeSlides;
+  const v = data.value as Partial<HomeSlides>;
+  return {
+    enabled: v.enabled !== false,
+    intervalSec: Math.min(15, Math.max(2, Number(v.intervalSec) || 5)),
+    slides: Array.isArray(v.slides) ? v.slides : [],
+  };
 }
 
 export const getFilterTags = async () => mock.filterTags;
